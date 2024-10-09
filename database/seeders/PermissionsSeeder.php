@@ -25,23 +25,15 @@ class PermissionsSeeder extends Seeder
             'edit admins',
             'delete admins',
 
-            'show employees',
-            'add employees',
-            'edit employees',
-            'delete employees',
+            'show categories',
+            'add category',
+            'edit category',
+            'delete category',
 
-            'show services',
-            'add services',
-            'edit services',
-            'delete services',
-
-            'show branches',
-            'add branches',
-            'edit branches',
-            'delete branches',
-            
-            'show customers',
-            'delete customers',
+            'show articles',
+            'add article',
+            'edit article',
+            'delete article',
         ];
         $role = Role::create(['guard_name' => 'admin', 'name' => 'super_admin']);
         foreach ($permissions as $permission) {

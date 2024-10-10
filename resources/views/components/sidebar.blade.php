@@ -5,49 +5,34 @@
                 <li>
                     <a href="{{ route('dashboard.admin') }}" class="">
                         <span class="nav-icon uil uil-create-dashboard"></span>
-                        <span class="menu-text">Dashboard</span>
+                        <span class="menu-text">لوحة التحكم</span>
                     </a>
                 </li>
-                {{-- @can('show services')
+                @can('show categories')
                     <li class="">
-                        <a href="{{ route('admin.services.index') }}">
+                        <a href="{{ route('dashboard.categories.index') }}">
                             <span class="nav-icon uil uil-briefcase"></span>
-                            <span class="menu-text">Services</span>
+                            <span class="menu-text">الفئات</span>
                         </a>
                     </li>
                 @endcan
-                @can('show customers')
+                @can('show articles')
                     <li class="">
-                        <a href="{{ route('admin.customers.index') }}">
-                            <span class="nav-icon uil uil-users-alt"></span>
-                            <span class="menu-text">Customers</span>
-                        </a>
-                    </li>
-                @endcan
-                @can('show branches')
-                    <li class="">
-                        <a href="{{ route('admin.branches.index') }}">
-                            <span class="nav-icon uil uil-code-branch"></span>
-                            <span class="menu-text">Branches</span>
-                        </a>
-                    </li>
-                @endcan
-                @can('show admins')
-                    <li class="">
-                        <a href="{{ route('admin.admins.index') }}">
-                            <span class="nav-icon uil uil-award"></span>
-                            <span class="menu-text">Admins</span>
+                        <a href="{{ route('dashboard.articles.index') }}">
+                            <span class="nav-icon uil uil-briefcase"></span>
+                            <span class="menu-text">المقالات</span>
                         </a>
                     </li>
                 @endcan
                 @can('show roles')
                     <li class="">
-                        <a href="{{ route('admin.roles.index') }}">
-                            <span class="nav-icon uil uil-shield-check"></span>
-                            <span class="menu-text">Roles</span>
+                        <a href="{{ route('dashboard.roles.index') }}">
+                            <span class="nav-icon uil uil-briefcase"></span>
+                            <span class="menu-text">الصلاحيات</span>
                         </a>
                     </li>
-                @endcan --}}
+                @endcan
+
 
             </ul>
         </div>

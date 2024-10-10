@@ -4,25 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:view-categories', ['only' => ['index', 'show']]);
-        $this->middleware('permission:edit-category', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:add-category', ['only' => ['create', 'store']]);
-        $this->middleware('permission:delete-category', ['only' => ['destroy']]);
+        $this->middleware(['permission:add category,admin'])->only(['create', 'store']);
+        $this->middleware(['permission:edit category,admin'])->only(['edit', 'update']);
+        $this->middleware(['permission:delete category,admin'])->only(['destroy']);
     }
     public function index()
     {
         $categories = Category::orderBy('created_at', 'desc')->get();
-        return view("dashboard.categories.index", compact("categories"));
+        return view("admin.categories.index", compact("categories"));
     }
-
     public function create()
     {
-        return view("dashboard.categories.create");
+        return view("admin.categories.create");
     }
 
 
@@ -31,41 +30,78 @@ class CategoryController extends Controller
         $validatedData = $request->validate([
             "name" => "required|string|max:255",
             "description" => "nullable|string",
+            "image" => "required|image|mimes:jpeg,png,jpg,gif",
         ]);
+
         try {
+            $fullPath = $request->file('image')->store('categories/images', 'public');
+            $fileName = basename($fullPath);
+            $validatedData['image'] = $fileName;
+
+            $slug = str_replace(' ', '_', $validatedData['name']);
+            $validatedData['slug'] = $slug;
+
             Category::create($validatedData);
-            return redirect()->route("dashboard.categories.show.all")->with("success", "تم تسجيل الفئة بنجاح");
+            return redirect()->route("dashboard.categories.index")->with("success", "تم تسجيل الفئة بنجاح");
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with("error", "خطأ في تسجيل الفئة");
         }
     }
 
-    public function edit($category_id)
+    public function edit(Category $category)
     {
-        $category = Category::find($category_id);
-        if (!$category) {
-            return redirect()->route('dashboard.categories.show.all');
-        }
-        return view("dashboard.categories.edit", compact("hotel"));
+        return view('admin.categories.edit', compact('category'));
     }
 
-    public function update(Request $request, $category_id)
+    public function update(Request $request, Category $category)
     {
-        $data = $request->validate([
+        // Validate the request first
+        $validatedData = $request->validate([
             "name" => "nullable|string|max:255",
-            "location" => "nullable|string"
+            "description" => "nullable|string",
+            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048", // Optional: specify max size
         ]);
-        $category = Category::find($category_id)->update($data);
-        if (!$category) {
-            return redirect()->route('dashboard.categories.show.all')->with("error", "الفئة غير موجود ");
+
+        try {
+            // Initialize image variable
+            $imageName = $category->image; // Default to current image
+
+            // Check if a new image file is uploaded
+            if ($request->hasFile('image')) {
+                // Store the new image and get the filename
+                $fullPath = $request->file('image')->store('categories/images', 'public');
+                $imageName = basename($fullPath);
+            }
+
+            // Generate the slug, replacing spaces with underscores
+            $slug = str_replace(' ', '_', $validatedData['name'] ?? $category->name);
+
+            // Update the category with validated data
+            $successUpdated = $category->update([
+                'name' => $validatedData['name'] ?? $category->name,
+                'description' => $validatedData['description'] ?? $category->description,
+                'image' => $imageName, // Use the existing image or the new one
+                'slug' => $slug,
+            ]);
+
+            // Handle the update response
+            if (!$successUpdated) {
+                return redirect()->back()->withInput()->with("error", "خطأ في تعديل الفئة");
+            }
+
+            return redirect()->route("dashboard.categories.index")->with("success", "تم تعديل بيانات الفئة بنجاح");
+        } catch (\Exception $e) {
+            // Log the error message if needed
+            // Log::error($e->getMessage());
+            return redirect()->back()->withInput()->with("error", "خطأ في تعديل الفئة");
         }
-        return redirect()->route("dashboard.categories.show.all")->with("success", "تم تعديل بيانات الفئة بنجاح");
     }
 
 
-    public function destroy($id)
+
+    public function destroy(Category $category)
     {
-        Category::destroy($id);
-        return response()->json(["message" => 'تم حذف الفئة بنجاح']);
+        $category->delete();
+        return redirect()->route('dashboard.categories.index')->with('success', 'تم حذف الفئة بنجاح');
     }
 }

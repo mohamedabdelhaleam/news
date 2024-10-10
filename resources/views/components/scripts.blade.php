@@ -47,3 +47,9 @@
 <script src="{{ asset('dashboard/assets/theme_assets/js/jvectormap-init.js') }}"></script>
 <script src="{{ asset('dashboard/assets/theme_assets/js/leaflet-init.js') }}"></script>
 <script src="{{ asset('dashboard/assets/theme_assets/js/main.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script>
+    const quill = new Quill('#editor', {
+      theme: 'snow'
+    });
+  </script>

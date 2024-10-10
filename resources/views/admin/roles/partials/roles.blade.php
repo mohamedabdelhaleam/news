@@ -21,7 +21,7 @@
                                                 <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                     @can('edit roles')
                                                         <li>
-                                                            <a href="{{ route('admin.roles.edit', $role->id) }}" class="edit">
+                                                            <a href="{{ route('dashboard.roles.edit', $role->id) }}" class="edit">
                                                                 <i class="uil uil-edit"></i>
                                                             </a>
                                                         </li>
@@ -33,7 +33,7 @@
                                                                 <i class="uil uil-trash-alt"></i>
                                                             </a>
                                                             <form id="delete-form-{{ $role->id }}"
-                                                                action="{{ route('admin.roles.destroy', $role->id) }}"
+                                                                action="{{ route('dashboard.roles.destroy', $role->id) }}"
                                                                 method="POST" style="display:none;">
                                                                 @csrf
                                                                 @method('DELETE')

@@ -1,124 +1,91 @@
-@section('title', __('pages.answers'))
 @extends('layouts.app')
-@section('content')
 
+@section('content')
     <div class="contents">
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="breadcrumb-main">
-                        <div class="breadcrumb-action justify-content-center flex-wrap">
+
+                    <div class="breadcrumb-main user-member justify-content-sm-between ">
+                        <div class=" d-flex flex-col flex-wrap justify-content-center breadcrumb-main__wrapper">
+                            <div class="d-flex align-items-center user-member__title justify-content-center me-sm-25">
+                                <h4 class="text-capitalize fw-500 breadcrumb-title">الفئات</h4>
+                            </div>
+                            <br>
+
+
+
+                        </div>
+                        <div class="d-flex justify-between items-center gap-1">
+                            @can('add category')
+                                <div class="action-btn">
+                                    <a href="{{ route('dashboard.categories.add') }}" class="btn px-15 btn-primary">
+                                        <i class="las la-plus fs-16"></i>اضافة فئة</a>
+                                </div>
+                            @endcan
 
                         </div>
                     </div>
+
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-
-                    <div class="card">
-                        <div class="card-header color-dark fw-500">
-                            <p>الفنادق</p>
-
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="table4 p-25 mb-30">
-                                {{-- @can('add-user') --}}
-                                <a href="{{ route('dashboard.hotels.show.create.form') }}"
-                                    class="btn btn-primary my-2">اضافة فندق</a>
-                                {{-- @endcan --}}
-                                <div class="table-responsive">
-                                    <table class="table mb-0">
-                                        <thead>
-                                            <tr class="userDatatable-header">
-                                                <th>
-                                                    <span class="userDatatable-title">#</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">الاسم</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">الموقع</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">الاجراءات</span>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @if (count($hotels) > 0)
-                                                @foreach ($hotels as $hotel)
-                                                    <tr id="ho_{{ $hotel->id }}">
-                                                        <td>
-                                                            <div class="userDatatable-content">
-                                                                {{ $loop->iteration }}
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="userDatatable-content">
-                                                                {{ $hotel->name }}
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="userDatatable-content text-truncate"
-                                                                style="max-width: 100px">
-                                                                {{ $hotel->location }}
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="userDatatable-content d-flex gap-3">
-                                                                <a href="{{ route('dashboard.hotels.show.edit', ['id' => $hotel->id]) }}"
-                                                                    class=" p-2 rounded" title="Edit"><i
-                                                                        class="fs-5 text-primary uil uil-edit"></i>
-                                                                </a>
-
-                                                                <a rel="nofollow" onclick="deleteHotel({{ $hotel->id }})"
-                                                                    class="p-2 rounded"
-                                                                    style="cursor: pointer !important ; font-size: 20px !important "
-                                                                    title="Delete"><i
-                                                                        class="text-danger uil uil-trash-alt"></i>
-                                                                </a>
-
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            @endif
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+            {{-- <div class="row mb-4 mx-4">
+                <div class="d-flex align-items-center user-member__form my-sm-0 my-2">
+                    <img src="{{ asset('dashboard/img/svg/search.svg') }}" alt="search" class="svg">
+                    <input class="form-control me-sm-2 border-0 box-shadow-none" id="search-input"
+                        type="search" value="{{ request('search') }}" placeholder="Search by Name"
+                        aria-label="Search">
                 </div>
+            </div> --}}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="userDatatable global-shadow border-light-0 p-30 bg-white radius-xl w-100 mb-30">
+                        <div class="table-responsive">
+                            <table class="table mb-0 table-borderless">
+                                <thead>
+                                    <tr class="userDatatable-header">
+                                        <th style="width: 10px">
+                                            <div class="d-flex align-items-center">
+                                                <div class="custom-checkbox check-all w-1 h-1">
+                                                    <input class="checkbox w-1 h-1" type="checkbox" id="check-44">
+                                                    <label for="check-44">
+                                                        <span class="checkbox-text userDatatable-title"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <span class="userDatatable-title">الصورة الرئيسية</span>
+                                        </th>
+                                        <th>
+                                            <span class="userDatatable-title">الاسم</span>
+                                        </th>
+                                        <th>
+                                            <span class="userDatatable-title">الوصف</span>
+                                        </th>
+                                        <th>
+                                            <span class="userDatatable-title">الحالة</span>
+                                        </th>
+                                        @canany(['edit category', 'delete category'])
+                                            <th>
+                                                <span class="userDatatable-title float-end">الاجراءات</span>
+                                            </th>
+                                        @endcanany
+                                    </tr>
+                                </thead>
+                                <tbody id="services-table">
+                                    @include('admin.categories.partials.categories', [
+                                        'categories' => $categories,
+                                    ])
 
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-@endsection
-
-@section('script')
-    <script>
-        function deleteHotel(id) {
-            if (confirm('هل تريد حذف هذا الفندق؟')) {
-                $.ajax({
-                    url: "{{ route('dashboard.hotels.destroy', '') }}/" + id,
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(responseData) {
-                        $('#ho_' + id).remove();
-                    },
-                    error: function(xhr, status, error) {
-
-                        console.error('Request failed with status:', status);
-                    }
-                });
-            }
-        }
-    </script>
 @endsection

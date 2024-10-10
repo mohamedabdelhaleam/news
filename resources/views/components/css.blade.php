@@ -16,11 +16,15 @@
 <link rel="stylesheet" href="{{ asset('dashboard/assets/vendor_assets/css/star-rating-svg.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/assets/vendor_assets/css/trumbowyg.min.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/assets/vendor_assets/css/wickedpicker.min.css') }}">
-<link rel="stylesheet" href="{{ asset('dashboard/style.css') }}">
+{{-- <link rel="stylesheet" href="{{ asset('dashboard/style.css') }}"> --}}
+<link rel="stylesheet" href="{{ asset('dashboard/rtl.css') }}">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
 <!-- endinject -->
 
 <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/favicon.png') }}">
 
 <!-- Fonts -->
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.0/css/line.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
+    integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />

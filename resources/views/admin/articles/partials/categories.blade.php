@@ -1,4 +1,4 @@
-@foreach ($services as $service)
+@foreach ($categories as $category)
     <tr>
         <td>
             <div class="checkbox-group-wrapper">
@@ -12,39 +12,42 @@
         </td>
         <td>
             <div class="userDatatable-content">
-                <a href="#">{{ $service->name }}</a>
+                <a href="#">{{ $category->name }}</a>
             </div>
         </td>
         <td>
             <div class="userDatatable-content">
-                <button type="button"
-                    onclick="fillModelBody({{ json_encode($service->plan) }}, '{{ $service->name }}')"
-                    class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-basic">Show</button>
+                <a href="#">{{ $category->description }}</a>
+            </div>
+        </td>
+        <td>
+            <div class="userDatatable-content">
+                <a href="#">{{ $category->status }}</a>
             </div>
         </td>
         <td>
             <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                 @can('edit services')
                     <li>
-                        <a href="{{ route('admin.services.edit', $service->id) }}" class="edit">
+                        <a href="{{ route('dashboard.categories.edit', $category->id) }}" class="edit">
                             <i class="uil uil-edit"></i>
                         </a>
                     </li>
                 @endcan
                 @can('delete services')
                     <li>
-                        <a href="#" id="delete-service-{{ $service->id }}" class="remove">
+                        <a href="#" id="delete-service-{{ $category->id }}" class="remove">
                             <i class="uil uil-trash-alt"></i>
                         </a>
-                        <form id="delete-form-{{ $service->id }}" action="{{ route('admin.services.destroy', $service) }}"
+                        <form id="delete-form-{{ $category->id }}" action="{{ route('dashboard.categories.destroy', $category) }}"
                             method="POST" style="display:block;">
                             @csrf
                             @method('DELETE')
                         </form>
                         <script>
-                            document.getElementById('delete-service-{{ $service->id }}').addEventListener('click', function(event) {
+                            document.getElementById('delete-service-{{ $category->id }}').addEventListener('click', function(event) {
                                 event.preventDefault();
-                                if (confirm('Are you sure you want to delete this service?')) {
+                                if (confirm('هل تريد حذف هذة الفئة ؟?')) {
                                     document.getElementById('delete-form-{{ $service->id }}').submit();
                                 }
                             });

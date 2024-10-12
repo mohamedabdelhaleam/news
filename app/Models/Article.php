@@ -16,7 +16,7 @@ class Article extends Model
         return $this->belongsTo(Category::class , 'category_id' , 'id');
     }
 
-    public function author()
+    public function user()
     {
         return $this->belongsTo(Admin::class , 'author' , 'id');
     }

@@ -9,20 +9,20 @@ class ArticleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:view-articles', ['only' => ['index', 'show']]);
-        $this->middleware('permission:edit-article', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:add-article', ['only' => ['create', 'store']]);
-        $this->middleware('permission:delete-article', ['only' => ['destroy']]);
+        $this->middleware('permission:show articles', ['only' => ['index', 'show']]);
+        $this->middleware('permission:add article', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:edit article', ['only' => ['create', 'store']]);
+        $this->middleware('permission:delete article', ['only' => ['destroy']]);
     }
     public function index()
     {
         $articles = Article::orderBy('created_at', 'desc')->get();
-        return view("dashboard.articles.index", compact("articles"));
+        return view("admin.articles.index", compact("articles"));
     }
 
     public function create()
     {
-        return view("dashboard.articles.create");
+        return view("admin.articles.create");
     }
 
 

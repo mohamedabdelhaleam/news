@@ -8,13 +8,13 @@
                 <div class="col-lg-12">
 
                     <div class="breadcrumb-main">
-                        <h4 class="text-capitalize breadcrumb-title">اضافة فئة</h4>
+                        <h4 class="text-capitalize breadcrumb-title">اضافة مقالة</h4>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="#"><i class="uil uil-estate"></i>الرئيسية</a>
                                     </li>
-                                    <li class="breadcrumb-item active" aria-current="page">الفئات</li>
+                                    <li class="breadcrumb-item active" aria-current="page">المقالة</li>
                                 </ol>
                             </nav>
                         </div>
@@ -27,7 +27,7 @@
                     <div class="card card-Vertical card-default card-md mb-4">
                         <div class="card-body pb-md-30">
                             <div class="Vertical-form">
-                                <form method="POST" class="row" action="{{ route('dashboard.categories.store') }}">
+                                <form method="POST" class="row" action="{{ route('dashboard.articles.store') }}">
                                     @csrf
 
                                     <div class="form-group col-12">
@@ -37,7 +37,7 @@
                                             <span class="uil uil-briefcase "></span>
                                             <input type="text" name="name"
                                                 class="form-control ih-medium ip-gray radius-xs b-light" id="name"
-                                                value="{{ old('name') }}" placeholder="اسم الفئة">
+                                                value="{{ old('name') }}" placeholder="اسم المقالة">
                                         </div>
                                         @if ($errors->has('name'))
                                             <span class="text-red-600 text-sm">{{ $errors->first('name') }}</span>
@@ -47,7 +47,7 @@
                                     <!-- Quill Editor -->
                                     <div class="form-group col-12 min-h-14">
                                         <label for="description"
-                                            class="color-dark fs-20 fw-500 align-center mb-10">الوصف</label>
+                                            class="color-dark fs-20 fw-500 align-center mb-10">المحتوي</label>
                                         <div>
                                             <div id="editor" class="min-h-14">
 

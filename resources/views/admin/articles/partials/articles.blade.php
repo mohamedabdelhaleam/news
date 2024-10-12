@@ -1,28 +1,39 @@
-@foreach ($categories as $category)
+@foreach ($articles as $article)
     <tr>
         <td>
             <div class="checkbox-group-wrapper">
                 <div class="checkbox-group d-flex">
                     <div class="checkbox-theme-default custom-checkbox checkbox-group__single d-flex">
-                        <input class="checkbox" type="checkbox" id="check-grp-content12">
-                        <label for="check-grp-content12"></label>
+                        <input class="checkbox" type="checkbox" id="check-grp-content{{ $article->id }}">
+                        <label for="check-grp-content{{ $article->id }}"></label>
                     </div>
                 </div>
             </div>
         </td>
         <td>
             <div class="userDatatable-content">
-                <a href="#">{{ $category->name }}</a>
+                <a href="#">{{ $article->title }}</a>
+            </div>
+        </td>
+        <td>
+            <div class="userDatatable-content text-truncate" style="max-width: 100px">
+                <a href="#">{{ $article->description }}</a>
             </div>
         </td>
         <td>
             <div class="userDatatable-content">
-                <a href="#">{{ $category->description }}</a>
+                <a href="#">{{ optional($article->category)->name }}</a>
             </div>
         </td>
         <td>
             <div class="userDatatable-content">
-                <a href="#">{{ $category->status }}</a>
+
+                <a href="#">{{ optional($article->user)->name }}</a>
+            </div>
+        </td>
+        <td>
+            <div class="userDatatable-content">
+                <a href="#">{{ $article->status }}</a>
             </div>
         </td>
         <td>
@@ -34,21 +45,21 @@
                         </a>
                     </li>
                 @endcan
-                @can('delete services')
+                @can('delete article')
                     <li>
-                        <a href="#" id="delete-service-{{ $category->id }}" class="remove">
+                        <a href="#" id="delete-article-{{ $article->id }}" class="remove">
                             <i class="uil uil-trash-alt"></i>
                         </a>
-                        <form id="delete-form-{{ $category->id }}" action="{{ route('dashboard.categories.destroy', $category) }}"
+                        <form id="delete-form-{{ $article->id }}" action="{{ route('dashboard.articles.destroy', $article) }}"
                             method="POST" style="display:block;">
                             @csrf
                             @method('DELETE')
                         </form>
                         <script>
-                            document.getElementById('delete-service-{{ $category->id }}').addEventListener('click', function(event) {
+                            document.getElementById('delete-article-{{ $article->id }}').addEventListener('click', function(event) {
                                 event.preventDefault();
-                                if (confirm('هل تريد حذف هذة الفئة ؟?')) {
-                                    document.getElementById('delete-form-{{ $service->id }}').submit();
+                                if (confirm('هل تريد حذف هذة المقالة ؟?')) {
+                                    document.getElementById('delete-form-{{ $article->id }}').submit();
                                 }
                             });
                         </script>

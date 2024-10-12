@@ -10,7 +10,7 @@
                     <div class="breadcrumb-main user-member justify-content-sm-between ">
                         <div class=" d-flex flex-col flex-wrap justify-content-center breadcrumb-main__wrapper">
                             <div class="d-flex align-items-center user-member__title justify-content-center me-sm-25">
-                                <h4 class="text-capitalize fw-500 breadcrumb-title">الفئات</h4>
+                                <h4 class="text-capitalize fw-500 breadcrumb-title">المقالات</h4>
                             </div>
                             <br>
 
@@ -21,7 +21,7 @@
                             @can('add category')
                                 <div class="action-btn">
                                     <a href="{{ route('dashboard.categories.add') }}" class="btn px-15 btn-primary">
-                                        <i class="las la-plus fs-16"></i>اضافة فئة</a>
+                                        <i class="las la-plus fs-16"></i>اضافة مقالة</a>
                                 </div>
                             @endcan
 
@@ -59,12 +59,18 @@
                                             <span class="userDatatable-title">الاسم</span>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title">الوصف</span>
+                                            <span class="userDatatable-title">المحتوي</span>
+                                        </th>
+                                        <th>
+                                            <span class="userDatatable-title">الفئة</span>
+                                        </th>
+                                        <th>
+                                            <span class="userDatatable-title">الكاتب</span>
                                         </th>
                                         <th>
                                             <span class="userDatatable-title">الحالة</span>
                                         </th>
-                                        @canany(['edit category', 'delete category'])
+                                        @canany(['edit article', 'delete article'])
                                             <th>
                                                 <span class="userDatatable-title float-end">الاجراءات</span>
                                             </th>
@@ -72,8 +78,8 @@
                                     </tr>
                                 </thead>
                                 <tbody id="services-table">
-                                    @include('admin.categories.partials.categories', [
-                                        'categories' => $categories,
+                                    @include('admin.articles.partials.articles', [
+                                        'articles' => $articles,
                                     ])
 
                                 </tbody>

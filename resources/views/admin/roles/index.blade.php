@@ -25,13 +25,13 @@
 
                 </div>
             </div>
-            <div class="row mb-4 mx-4">
+            {{-- <div class="row mb-4 mx-4">
                 <div class="d-flex align-items-center user-member__form my-sm-0 my-2">
                     <img src="{{ asset('dashboard/img/svg/search.svg') }}" alt="search" class="svg">
                     <input class="form-control me-sm-2 border-0 box-shadow-none" type="search" name="search"
                         placeholder="Search by Name" aria-label="Search" id="search-input" value="{{ request('search') }}">
                 </div>
-            </div>
+            </div> --}}
             <div class="row">
                 <div class="col-lg-12">
                     <div class="userDatatable global-shadow border-light-0 p-30 bg-white radius-xl w-100 mb-30">
@@ -65,7 +65,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>

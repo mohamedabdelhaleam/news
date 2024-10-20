@@ -11,13 +11,13 @@
             </div>
         </td>
         <td>
-            <div class="userDatatable-content">
+            <div class="userDatatable-content text-truncate" style="max-width: 200px">
                 <a href="#">{{ $article->title }}</a>
             </div>
         </td>
         <td>
-            <div class="userDatatable-content text-truncate" style="max-width: 100px">
-                <a href="#">{{ $article->description }}</a>
+            <div class="userDatatable-content text-truncate" style="max-width: 200px">
+                <a href="#">{!! $article->description !!}</a>
             </div>
         </td>
         <td>
@@ -38,9 +38,9 @@
         </td>
         <td>
             <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
-                @can('edit services')
+                @can('edit article')
                     <li>
-                        <a href="{{ route('dashboard.categories.edit', $category->id) }}" class="edit">
+                        <a href="{{ route('dashboard.articles.edit', $article->id) }}" class="edit">
                             <i class="uil uil-edit"></i>
                         </a>
                     </li>

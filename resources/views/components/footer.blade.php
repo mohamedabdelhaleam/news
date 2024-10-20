@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="footer-copyright">
-                        <p><span>© 2024</span><a href="#">Echopus</a>
+                        <p><span>© 2024</span><a href="#">Halim</a>
                         </p>
                     </div>
                 </div>

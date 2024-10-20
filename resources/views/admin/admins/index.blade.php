@@ -20,14 +20,14 @@
                             </div>
                         @endcan
                     </div>
-                    <div class="row mb-4 mx-4">
+                    {{-- <div class="row mb-4 mx-4">
                         <div class="d-flex align-items-center user-member__form my-sm-0 my-2">
                             <img src="{{ asset('dashboard/img/svg/search.svg') }}" alt="search" class="svg">
                             <input class="form-control me-sm-2 border-0 box-shadow-none" type="search"
                                 placeholder="Search by Name" aria-label="Search"
                                 id="search-input" value="{{ request('search') }}">
                         </div>
-                    </div>
+                    </div> --}}
 
                 </div>
             </div>

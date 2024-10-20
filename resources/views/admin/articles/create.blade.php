@@ -31,13 +31,29 @@
                                     @csrf
 
                                     <div class="form-group col-12">
-                                        <label for="name" class=" color-dark fs-20 fw-500 align-center mb-10">الاسم
+                                        <label for="title" class=" color-dark fs-20 fw-500 align-center mb-10">الاسم
                                         </label>
                                         <div class="with-icon">
                                             <span class="uil uil-briefcase "></span>
-                                            <input type="text" name="name"
-                                                class="form-control ih-medium ip-gray radius-xs b-light" id="name"
-                                                value="{{ old('name') }}" placeholder="اسم المقالة">
+                                            <input type="text" name="title"
+                                                class="form-control ih-medium ip-gray radius-xs b-light" id="title"
+                                                value="{{ old('title') }}" placeholder="عنوان المقالة">
+                                        </div>
+                                        @if ($errors->has('title'))
+                                            <span class="text-red-600 text-sm">{{ $errors->first('title') }}</span>
+                                        @endif
+                                    </div>
+                                    <div class="form-group col-12">
+                                        <label for="name" class=" color-dark fs-20 fw-500 align-center mb-10">الفئة</label>
+                                        <div class="with-icon">
+                                            <span class="uil uil-briefcase "></span>
+                                            <select name="category_id"
+                                                class="form-control ih-medium ip-gray radius-xs b-light" id="">
+                                                <option value="--">اختر الفئة</option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                         @if ($errors->has('name'))
                                             <span class="text-red-600 text-sm">{{ $errors->first('name') }}</span>

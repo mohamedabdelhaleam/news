@@ -55,36 +55,25 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
-        // Validate the request first
         $validatedData = $request->validate([
             "name" => "nullable|string|max:255",
             "description" => "nullable|string",
-            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048", // Optional: specify max size
+            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
         ]);
 
         try {
-            // Initialize image variable
-            $imageName = $category->image; // Default to current image
-
-            // Check if a new image file is uploaded
+            $imageName = basename($category->image);
             if ($request->hasFile('image')) {
-                // Store the new image and get the filename
                 $fullPath = $request->file('image')->store('categories/images', 'public');
                 $imageName = basename($fullPath);
             }
-
-            // Generate the slug, replacing spaces with underscores
             $slug = str_replace(' ', '_', $validatedData['name'] ?? $category->name);
-
-            // Update the category with validated data
             $successUpdated = $category->update([
                 'name' => $validatedData['name'] ?? $category->name,
                 'description' => $validatedData['description'] ?? $category->description,
-                'image' => $imageName, // Use the existing image or the new one
+                'image' => $imageName,
                 'slug' => $slug,
             ]);
-
-            // Handle the update response
             if (!$successUpdated) {
                 return redirect()->back()->withInput()->with("error", "خطأ في تعديل الفئة");
             }

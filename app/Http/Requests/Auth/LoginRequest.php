@@ -47,11 +47,6 @@ class LoginRequest extends FormRequest
         if (Auth::guard('admin')->attempt($credentials, $remember)) {
             return;
         }
-
-        if (Auth::guard('employee')->attempt($credentials, $remember)) {
-            return;
-        }
-
         RateLimiter::hit($this->throttleKey());
 
         throw ValidationException::withMessages([

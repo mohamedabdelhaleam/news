@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -16,27 +18,43 @@ class ArticleController extends Controller
     }
     public function index()
     {
+        $user = Auth::guard('admin')->user();
         $articles = Article::orderBy('created_at', 'desc')->get();
+        if ($user->roles[0]->name != 'super_admin') {
+            $articles->where('author', $user->id);
+        }
         return view("admin.articles.index", compact("articles"));
     }
 
+
     public function create()
     {
-        return view("admin.articles.create");
+        $categories = Category::all();
+        return view("admin.articles.create", compact('categories'));
     }
 
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            "title" => "required|string|max:255",
+        $request->validate([
+            "title" => "required|string|max:255|unique:articles,title",
             "description" => "required|string",
             "category_id" => "required|exists:categories,id",
-            "author" => "required|exists:users,id"
         ]);
+        $user = Auth::guard('admin')->user();
+        $slug = str_replace(' ', '_', $request->title);
         try {
-            Article::create($validatedData);
-            return redirect()->route("dashboard.articles.show.all")->with("success", "تم تسجيل المقالة بنجاح");
+            $article = Article::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'category_id' => $request->category_id,
+                'slug' => $slug,
+                'author' => $user->id
+            ]);
+            if ($article) {
+                return redirect()->route("dashboard.articles.index")->with("success", "تم تسجيل المقالة بنجاح");
+            }
+            return redirect()->back()->withInput()->with("error", "خطأ في المقالة الفندق");
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with("error", "خطأ في المقالة الفندق");
         }
@@ -44,32 +62,55 @@ class ArticleController extends Controller
 
     public function edit($article_id)
     {
+        $categories = Category::all();
         $article = Article::find($article_id);
+
         if (!$article) {
-            return redirect()->route('dashboard.articles.show.all');
+            return redirect()->route('dashboard.articles.index');
         }
-        return view("dashboard.hotels.edit", compact("hotel"));
+        return view("admin.articles.edit", compact("article" ,'categories'));
     }
 
     public function update(Request $request, $article_id)
     {
-        $data = $request->validate([
+        $user = Auth::guard('admin')->user();
+        $request->validate([
             "title" => "nullable|string|max:255",
             "description" => "nullable|string",
-            "category_id" => "nullable|exists:categories,id",
-            "author" => "nullable|exists:users,id"
+            "category_id" => "nullable|exists:categories,id"
         ]);
-        $article = Article::find($article_id)->update($data);
-        if (!$article) {
-            return redirect()->route('dashboard.articles.show.all')->with("error", "المقالة غير موجود ");
+        $article = Article::where('id', $article_id)->first();
+        if ($user->roles[0]->name != 'super_admin') {
+            $article->where('author', $user->id);
         }
-        return redirect()->route("dashboard.articles.show.all")->with("success", "تم تعديل بيانات المقالة بنجاح");
+        $slug = str_replace(' ', '_', $request->title ?? $article->title);
+        $updatedArticle = $article->update([
+            'title' => $request->title ?? $article->title,
+            'description' => $request->description ?? $article->description,
+            'category_id' => $request->category_id ?? $article->category_id,
+            'slug' => $slug
+        ]);
+        if (!$article) {
+            return redirect()->route('dashboard.articles.index')->with("error", "المقالة غير موجود");
+        }
+        if (!$updatedArticle) {
+            return redirect()->route('dashboard.articles.index')->with("error", "خطأ في تعديل المقالة");
+        }
+        return redirect()->route("dashboard.articles.index")->with("success", "تم تعديل بيانات المقالة بنجاح");
     }
 
 
-    public function destroy($id)
+    public function destroy($article_id)
     {
-        Article::destroy($id);
+        $user = Auth::guard('admin')->user();
+        $article = Article::where('id', $article_id)->first();
+        if ($user->roles[0]->name != 'super_admin') {
+            $article->where('author', $user->id);
+        }
+        if (!$article) {
+            return response()->json(["message" => 'خطأ في حذف المقالة']);
+        }
+        $article->delete();
         return response()->json(["message" => 'تم حذف المقالة بنجاح']);
     }
 }

@@ -65,6 +65,7 @@ class ArticleController extends Controller
         $categories = Category::all();
         $article = Article::find($article_id);
 
+        
         if (!$article) {
             return redirect()->route('dashboard.articles.index');
         }

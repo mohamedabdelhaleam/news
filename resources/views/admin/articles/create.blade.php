@@ -27,7 +27,7 @@
                     <div class="card card-Vertical card-default card-md mb-4">
                         <div class="card-body pb-md-30">
                             <div class="Vertical-form">
-                                <form method="POST" class="row" action="{{ route('dashboard.articles.store') }}">
+                                <form method="POST" class="row" action="{{ route('dashboard.articles.store') }}" enctype="multipart/form-data">
                                     @csrf
 
                                     <div class="form-group col-12">
@@ -58,6 +58,34 @@
                                         @if ($errors->has('name'))
                                             <span class="text-red-600 text-sm">{{ $errors->first('name') }}</span>
                                         @endif
+                                    </div>
+
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <div class="dm-tag-wrap">
+                                                <label for="image" class="il-gray fs-14 fw-500 align-center mb-10">
+                                                    الصورة الرئيسية
+                                                </label>
+                                                <div class="dm-tag-wrap col-12">
+                                                    <div class="dm-upload  col-12">
+                                                        <div class="dm-upload-avatar  col-12">
+                                                            <img class="avatrSrc"
+                                                                src="{{ asset('dashboard/img/upload.png') }}"
+                                                                alt="Avatar Upload">
+                                                        </div>
+                                                        <div class="avatar-up">
+                                                            <input type="file" name="image" required id="image"
+                                                                class="upload-avatar-input">
+                                                        </div>
+                                                    </div>
+                                                    @error('image')
+                                                        <div class="invalid-feedback d-block">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <!-- Quill Editor -->

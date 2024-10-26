@@ -20,22 +20,7 @@ class RoleController extends Controller
     }
     public function index(Request $request)
     {
-        $query = Role::query();
-
-        if ($request->has('search')) {
-            $search = $request->input('search');
-            $query->where('name', 'like', "%{$search}%");
-        }
-
-        $roles = $query->paginate(10);
-        if ($request->ajax()) {
-            return response()->json([
-                'collection' => view('admin.roles.partials.roles', compact('roles'))->render(),
-                'pagination' => (string) $roles->appends(['search' => request('search')])->links(),
-            ]);
-        }
-
-
+        $roles = Role::all();
         return view('admin.roles.index', compact('roles'));
     }
     public function create()

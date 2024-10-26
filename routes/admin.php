@@ -1,13 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\BranchController;
-use App\Http\Controllers\Admin\CustomerController;
-use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\ServiceController;
-use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('dashboard.admin');
 });
 
 Route::prefix('admin')->name('dashboard.')->middleware(['auth:admin'])->group(function () {
@@ -41,7 +36,7 @@ Route::prefix('admin')->name('dashboard.')->middleware(['auth:admin'])->group(fu
         Route::patch('/{role}', [RoleController::class, 'update'])->name('update');
     });
 
-    
+
     Route::group(['prefix' => 'categories', 'as' => 'categories.'], function () {
         Route::get("/", [CategoryController::class, 'index'])->name('index');
         Route::get("/add", [CategoryController::class, 'create'])->name('add');

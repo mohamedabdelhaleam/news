@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
 
 use App\Models\Category;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use App\Http\Requests\Category\StoreCategoryRequest;
+use App\Http\Requests\Category\UpdateCategoryRequest;
+
 
 class CategoryController extends Controller
 {
@@ -24,15 +26,8 @@ class CategoryController extends Controller
         return view("admin.categories.create");
     }
 
-
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $validatedData = $request->validate([
-            "name" => "required|string|max:255",
-            "description" => "nullable|string",
-            "image" => "required|image|mimes:jpeg,png,jpg,gif",
-        ]);
-
         try {
             $fullPath = $request->file('image')->store('categories/images', 'public');
             $fileName = basename($fullPath);
@@ -53,14 +48,8 @@ class CategoryController extends Controller
         return view('admin.categories.edit', compact('category'));
     }
 
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $validatedData = $request->validate([
-            "name" => "nullable|string|max:255",
-            "description" => "nullable|string",
-            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
-        ]);
-
         try {
             $imageName = basename($category->image);
             if ($request->hasFile('image')) {
@@ -80,12 +69,9 @@ class CategoryController extends Controller
 
             return redirect()->route("dashboard.categories.index")->with("success", "تم تعديل بيانات الفئة بنجاح");
         } catch (\Exception $e) {
-            // Log the error message if needed
-            // Log::error($e->getMessage());
             return redirect()->back()->withInput()->with("error", "خطأ في تعديل الفئة");
         }
     }
-
 
 
     public function destroy(Category $category)

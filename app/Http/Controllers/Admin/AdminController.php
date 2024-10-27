@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreAdminRequest;
+use App\Http\Requests\Admin\UpdateAdminRequest;
 use App\Models\Admin;
-use App\Models\Branch;
 use App\Rules\UniqueUsername;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -19,51 +20,22 @@ class AdminController extends Controller
         $this->middleware(['permission:edit admins,admin'])->only(['edit', 'update']);
         $this->middleware(['permission:delete admins,admin'])->only(['destroy']);
     }
-    public function index(Request $request)
+    public function index()
     {
-
-        $query = Admin::query();
-        if (request('search')) {
-            $search = request("search");
-            $query->where("name", 'LIKE', "%{$search}%")->orWhere("username", 'LIKE', "%{$search}%")->orWhereHas('roles', function ($query) use ($search) {
-                $query->where('name', 'LIKE', "%{$search}%");
-            })->orWhereHas('branch', function ($query) use ($search) {
-                $query->where('name', 'LIKE', "%{$search}%");
-            });
-        }
-
-        $admins = $query->paginate(10);
-
-        if ($request->ajax()) {
-            return response()->json([
-                'collection' => view("admin.admins.partials.admins", compact("admins"))->render(),
-                'pagination' => (string)  $admins->appends(['search' => request('search')])->links(),
-            ]);
-        }
-
+        $admins = Admin::get();
         return view('admin.admins.index', compact('admins'));
     }
     public function create()
     {
         $roles = Role::all();
-        $branches = Branch::all();
         return view('admin.admins.create', compact('roles', 'branches'));
     }
-    public function store(Request $request)
+    public function store(StoreAdminRequest $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255', new UniqueUsername],
-            'password' => ['required', 'confirmed', Password::defaults()],
-            'role' => ['required', 'exists:roles,id'],
-            'branch' => ['nullable', 'exists:branches,id'],
-        ]);
-
         $admin = Admin::create([
             'name' => $request->name,
             'username' => $request->username,
-            'password' => Hash::make($request->password),
-            'branch_id' => $request->branch
+            'password' => Hash::make($request->password)
         ]);
 
         $role = Role::find($request->role);
@@ -75,25 +47,11 @@ class AdminController extends Controller
     public function edit(Admin $admin)
     {
         $roles = Role::all();
-        $branches = Branch::all();
-        return view('admin.admins.edit', compact('admin', 'roles', 'branches'));
+        return view('admin.admins.edit', compact('admin', 'roles'));
     }
 
-    public function update(Request $request, Admin $admin)
+    public function update(UpdateAdminRequest $request, Admin $admin)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'username' => [
-                'required',
-                'string',
-                'max:255',
-                new UniqueUsername($admin->id)
-            ],
-            'password' => ['nullable', 'confirmed', Password::defaults()],
-            'role' => ['required', 'exists:roles,id'],
-            'branch' => ['nullable', 'exists:branches,id'],
-        ]);
-
         $admin->update([
             'name' => $request->name,
             'username' => $request->username,

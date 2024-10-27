@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
 
-use App\Http\Requests\Article\StoreArticleRequest;
-use App\Http\Requests\Article\UpdateArticleRequest;
 use App\Models\Article;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Http\Requests\Article\StoreArticleRequest;
+use App\Http\Requests\Article\UpdateArticleRequest;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller

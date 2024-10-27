@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Article\StoreArticleRequest;
+use App\Http\Requests\Article\UpdateArticleRequest;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -34,14 +36,8 @@ class ArticleController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(StoreArticleRequest $request)
     {
-        $request->validate([
-            "title" => "required|string|max:255|unique:articles,title",
-            "description" => "required|string",
-            "category_id" => "required|exists:categories,id",
-            "image" => "required|image|mimes:jpeg,png,jpg,gif",
-        ]);
         $user = Auth::guard('admin')->user();
         $slug = str_replace(' ', '_', $request->title);
         try {
@@ -60,9 +56,9 @@ class ArticleController extends Controller
             if ($article) {
                 return redirect()->route("dashboard.articles.index")->with("success", "تم تسجيل المقالة بنجاح");
             }
-            return redirect()->back()->withInput()->with("error", "خطأ في المقالة الفندق");
+            return redirect()->back()->withInput()->with("error", "خطأ في أضافة المقالة");
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with("error", "خطأ في المقالة الفندق");
+            return redirect()->back()->withInput()->with("error", "خطأ في أضافة المقالة");
         }
     }
 
@@ -76,15 +72,9 @@ class ArticleController extends Controller
         return view("admin.articles.edit", compact("article", 'categories'));
     }
 
-    public function update(Request $request, $article_id)
+    public function update(UpdateArticleRequest $request, $article_id)
     {
         $user = Auth::guard('admin')->user();
-        $request->validate([
-            "title" => "nullable|string|max:255",
-            "description" => "nullable|string",
-            "image" => "nullable|image|mimes:jpeg,png,jpg,gif",
-            "category_id" => "nullable|exists:categories,id"
-        ]);
         $article = Article::where('id', $article_id)->first();
         if ($user->roles[0]->name != 'super_admin') {
             $article->where('author', $user->id);

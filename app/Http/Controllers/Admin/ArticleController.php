@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\Article;
@@ -39,12 +40,9 @@ class ArticleController extends Controller
     public function store(StoreArticleRequest $request)
     {
         $user = Auth::guard('admin')->user();
-        $slug = str_replace(' ', '_', $request->title);
         try {
-            if ($request->hasFile('image')) {
-                $fullPath = $request->file('image')->store('articles/images', 'public');
-                $fileName = basename($fullPath);
-            }
+            $fileName = uploadImage($request, 'image', 'articles/images');
+            $slug = generateSlug($request->title);
             $article = Article::create([
                 'title' => $request->title,
                 'description' => $request->description,
@@ -79,11 +77,7 @@ class ArticleController extends Controller
         if ($user->roles[0]->name != 'super_admin') {
             $article->where('author', $user->id);
         }
-        $imageName = basename($article->image);
-        if ($request->hasFile('image')) {
-            $fullPath = $request->file('image')->store('articles/images', 'public');
-            $imageName = basename($fullPath);
-        }
+        $imageName = uploadImage($request, 'image', 'articles/images') ?? basename($article->image);
         $slug = str_replace(' ', '_', $request->title ?? $article->title);
         $updatedArticle = $article->update([
             'title' => $request->title ?? $article->title,

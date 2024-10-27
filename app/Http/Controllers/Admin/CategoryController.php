@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\Category;
@@ -29,14 +30,14 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         try {
-            $fullPath = $request->file('image')->store('categories/images', 'public');
-            $fileName = basename($fullPath);
-            $validatedData['image'] = $fileName;
-
-            $slug = str_replace(' ', '_', $validatedData['name']);
-            $validatedData['slug'] = $slug;
-
-            Category::create($validatedData);
+            $fileName = uploadImage($request, 'image', 'categories/images');
+            $slug = generateSlug($request->name);
+            Category::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'image' => $fileName,
+                'slug' => $slug
+            ]);
             return redirect()->route("dashboard.categories.index")->with("success", "تم تسجيل الفئة بنجاح");
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with("error", "خطأ في تسجيل الفئة");
@@ -51,22 +52,17 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, Category $category)
     {
         try {
-            $imageName = basename($category->image);
-            if ($request->hasFile('image')) {
-                $fullPath = $request->file('image')->store('categories/images', 'public');
-                $imageName = basename($fullPath);
-            }
-            $slug = str_replace(' ', '_', $validatedData['name'] ?? $category->name);
+            $fileName = uploadImage($request, 'image', 'categories/images') ?? basename($category->image);
+            $slug = generateSlug($request->name) ?? $category->slug;
             $successUpdated = $category->update([
-                'name' => $validatedData['name'] ?? $category->name,
-                'description' => $validatedData['description'] ?? $category->description,
-                'image' => $imageName,
+                'name' => $request->name ?? $category->name,
+                'description' => $request->description ?? $category->description,
+                'image' => $fileName,
                 'slug' => $slug,
             ]);
             if (!$successUpdated) {
                 return redirect()->back()->withInput()->with("error", "خطأ في تعديل الفئة");
             }
-
             return redirect()->route("dashboard.categories.index")->with("success", "تم تعديل بيانات الفئة بنجاح");
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with("error", "خطأ في تعديل الفئة");

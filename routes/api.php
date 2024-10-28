@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Customer\CustomerController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\ArticleController;
+use App\Http\Controllers\Api\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -16,6 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+
+Route::prefix('v1')->group(function () {
+    Route::prefix('categories')->group(function () {
+        Route::get('/', [CategoryController::class, 'index']);
+        Route::get('{category}', [CategoryController::class, 'show']);
+    });
+
+    Route::prefix('articles')->group(function () {
+        Route::get('/', [ArticleController::class, 'index']);
+        Route::get('{article}', [ArticleController::class, 'show']);
+    });
 });

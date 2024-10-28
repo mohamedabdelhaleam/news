@@ -20,7 +20,7 @@
                         <div class="d-flex justify-between items-center gap-1">
                             @can('add article')
                                 <div class="action-btn">
-                                    <a href="{{ route('dashboard.articles.add') }}" class="btn px-15 btn-primary">
+                                    <a href="{{ route('dashboard.articles.create') }}" class="btn px-15 btn-primary">
                                         <i class="las la-plus fs-16"></i>اضافة مقالة</a>
                                 </div>
                             @endcan

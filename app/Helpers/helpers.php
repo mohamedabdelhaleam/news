@@ -19,3 +19,27 @@ if (!function_exists('generateSlug')) {
         return $slug;
     }
 }
+
+if (!function_exists('successResponse')) {
+
+    function successResponse($data, $message = "تم تنفيذ العملية بنجاح", $status = 200)
+    {
+        return response()->json([
+            'status' => true,
+            'message' => $message,
+            'data' => $data,
+        ], $status);
+    }
+}
+
+if (!function_exists('errorResponse')) {
+    function errorResponse($message = "خطاء في تنفيذ العملية", $status = 400)
+    {
+        $response = [
+            'status' => false,
+            'message' => $message,
+        ];
+
+        return response()->json($response, $status);
+    }
+}

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -27,6 +28,7 @@ Route::get('/', function () {
 Route::prefix('admin')->name('dashboard.')->middleware(['auth:admin'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('admin');
 
+    Route::resource('admins', AdminController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('articles', ArticleController::class);

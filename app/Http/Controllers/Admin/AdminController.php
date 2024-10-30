@@ -42,7 +42,7 @@ class AdminController extends Controller
 
         $admin->assignRole($role);
 
-        return redirect()->route('dashboard.admins.index')->with('success', 'Admin Added successfully.');
+        return redirect()->route('dashboard.admins.index')->with('success', 'تمت الاضافة بنجاح');
     }
     public function edit(Admin $admin)
     {
@@ -56,27 +56,26 @@ class AdminController extends Controller
             'name' => $request->name,
             'username' => $request->username,
             'password' => $request->password ? Hash::make($request->password) : $admin->password,
-            'branch_id' => $request->branch
         ]);
         $role = Role::find($request->role);
         $admin->syncRoles([]);
         $admin->assignRole($role);
 
-        return redirect()->route('dashboard.admins.index')->with('success', 'Admin updated successfully.');
+        return redirect()->route('dashboard.admins.index')->with('success', 'تم التعديل بنجاح');
     }
     public function destroy(Admin $admin)
     {
         if (auth('admin')->user()->id == $admin->id) {
-            return redirect()->route('dashboard.admins.index')->with('error', 'You can not delete yourself.');
+            return redirect()->route('dashboard.admins.index')->with('error', 'لا يمكن حذف حسابك');
         }
         $role = Role::where("name", "super_admin")->first();
         if ($role->users()->count() == 1 && $admin->hasRole('super_admin')) {
-            return redirect()->route('dashboard.admins.index')->with('error', 'Last Super Admin can not be deleted.');
+            return redirect()->route('dashboard.admins.index')->with('error', 'اخر مشرف لا يمكن حذفه');
         }
         if ($admin->hasRole('super_admin') && !auth('admin')->user()->hasRole("super_admin")) {
-            return redirect()->route('dashboard.admins.index')->with('error', 'You can not delete Super Admin.');
+            return redirect()->route('dashboard.admins.index')->with('error', 'لا يمكن حذف هذا المشرف');
         }
         $admin->delete();
-        return redirect()->route('dashboard.admins.index')->with('success', 'Admin deleted successfully.');
+        return redirect()->route('dashboard.admins.index')->with('success', 'تم الحذف بنجاح.');
     }
 }

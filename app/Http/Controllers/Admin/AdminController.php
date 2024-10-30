@@ -28,7 +28,7 @@ class AdminController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return view('admin.admins.create', compact('roles', 'branches'));
+        return view('admin.admins.create', compact('roles'));
     }
     public function store(StoreAdminRequest $request)
     {
@@ -42,7 +42,7 @@ class AdminController extends Controller
 
         $admin->assignRole($role);
 
-        return redirect()->route('admin.admins.index')->with('success', 'Admin Added successfully.');
+        return redirect()->route('dashboard.admins.index')->with('success', 'Admin Added successfully.');
     }
     public function edit(Admin $admin)
     {
@@ -62,21 +62,21 @@ class AdminController extends Controller
         $admin->syncRoles([]);
         $admin->assignRole($role);
 
-        return redirect()->route('admin.admins.index')->with('success', 'Admin updated successfully.');
+        return redirect()->route('dashboard.admins.index')->with('success', 'Admin updated successfully.');
     }
     public function destroy(Admin $admin)
     {
         if (auth('admin')->user()->id == $admin->id) {
-            return redirect()->route('admin.admins.index')->with('error', 'You can not delete yourself.');
+            return redirect()->route('dashboard.admins.index')->with('error', 'You can not delete yourself.');
         }
         $role = Role::where("name", "super_admin")->first();
         if ($role->users()->count() == 1 && $admin->hasRole('super_admin')) {
-            return redirect()->route('admin.admins.index')->with('error', 'Last Super Admin can not be deleted.');
+            return redirect()->route('dashboard.admins.index')->with('error', 'Last Super Admin can not be deleted.');
         }
         if ($admin->hasRole('super_admin') && !auth('admin')->user()->hasRole("super_admin")) {
-            return redirect()->route('admin.admins.index')->with('error', 'You can not delete Super Admin.');
+            return redirect()->route('dashboard.admins.index')->with('error', 'You can not delete Super Admin.');
         }
         $admin->delete();
-        return redirect()->route('admin.admins.index')->with('success', 'Admin deleted successfully.');
+        return redirect()->route('dashboard.admins.index')->with('success', 'Admin deleted successfully.');
     }
 }

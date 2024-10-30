@@ -23,9 +23,10 @@ class ArticleController extends Controller
     public function show(Article $article)
     {
         try {
-            // Load user and category relationships
             $article->load(['user', 'category']);
-
+            if (!$article) {
+                return errorResponse('لا يوجد بيانات');
+            }
             return successResponse($article);
         } catch (\Throwable $th) {
             return errorResponse('خطاء في تنفيذ العملية');

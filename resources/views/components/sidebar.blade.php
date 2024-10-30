@@ -24,6 +24,14 @@
                         </a>
                     </li>
                 @endcan
+                @can('show admins')
+                    <li class="">
+                        <a href="{{ route('dashboard.admins.index') }}">
+                            <span class="nav-icon uil uil-briefcase"></span>
+                            <span class="menu-text">الأدمن</span>
+                        </a>
+                    </li>
+                @endcan
                 @can('show roles')
                     <li class="">
                         <a href="{{ route('dashboard.roles.index') }}">

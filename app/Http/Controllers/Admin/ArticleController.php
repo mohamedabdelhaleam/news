@@ -96,17 +96,16 @@ class ArticleController extends Controller
     }
 
 
-    public function destroy($article_id)
+    public function destroy(Article $article)
     {
         $user = Auth::guard('admin')->user();
-        $article = Article::where('id', $article_id)->first();
         if ($user->roles[0]->name != 'super_admin') {
             $article->where('author', $user->id);
         }
         if (!$article) {
-            return response()->json(["message" => 'خطأ في حذف المقالة']);
+            return errorResponse('ليس لديك صلاحيات للحذف');
         }
         $article->delete();
-        return response()->json(["message" => 'تم حذف المقالة بنجاح']);
+        return successResponse('تم الحذف بنجاح');
     }
 }

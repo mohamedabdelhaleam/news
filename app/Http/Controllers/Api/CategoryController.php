@@ -21,9 +21,25 @@ class CategoryController extends Controller
         }
     }
 
-    public function show(Category $category){
+    public function show(Category $category)
+    {
         try {
+            if (!$category) {
+                return errorResponse('لا يوجد بيانات');
+            }
             return successResponse($category);
+        } catch (\Throwable $th) {
+            return errorResponse('خطاء في تنفيذ العملية');
+        }
+    }
+    public function getArticlesInCategory(Category $category)
+    {
+        try {
+            $articles = $category->articles;
+            if (!$articles) {
+                return errorResponse('لا يوجد بيانات');
+            }
+            return successResponse($articles);
         } catch (\Throwable $th) {
             return errorResponse('خطاء في تنفيذ العملية');
         }

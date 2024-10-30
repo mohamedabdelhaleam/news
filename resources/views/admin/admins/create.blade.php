@@ -21,47 +21,47 @@
                 </div>
             </div>
             <div class="row d-flex justify-content-center align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-12">
                     <div class="card card-Vertical card-default card-md mb-4">
                         <div class="card-body pb-md-30">
                             <div class="Vertical-form">
-                                <form method="POST" action="{{ route('admin.admins.store') }}">
+                                <form method="POST" class="row" action="{{ route('dashboard.admins.store') }}">
                                     @csrf
 
-                                    <div class="form-group">
+                                    <div class="form-group col-12 col-lg-6">
                                         <label for="name"
-                                            class="color-dark fs-14 fw-500 align-center mb-10">Name</label>
+                                            class="color-dark fs-14 fw-500 align-center mb-10">الاسم</label>
                                         <div class="with-icon">
                                             <span class="la-user lar"></span>
                                             <input type="text" name="name"
                                                 class="form-control ih-medium ip-gray radius-xs b-light" id="name"
-                                                value="{{ old('name') }}" placeholder="Admin Name">
+                                                value="{{ old('name') }}" placeholder="اسم الادمن">
                                         </div>
                                         @if ($errors->has('name'))
                                             <span class="text-red-600 text-sm">{{ $errors->first('name') }}</span>
                                         @endif
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group col-12 col-lg-6">
                                         <label for="username"
-                                            class="color-dark fs-14 fw-500 align-center mb-10">Username</label>
+                                            class="color-dark fs-14 fw-500 align-center mb-10">اليوزر</label>
                                         <div class="with-icon">
                                             <span class="lar la-envelope"></span>
                                             <input type="text" name="username"
                                                 class="form-control ih-medium ip-gray radius-xs b-light" id="username"
-                                                value="{{ old('username') }}" placeholder="Admin Username (used for login)">
+                                                value="{{ old('username') }}" placeholder="اليوزر يستخدم لتسجيل الدخول">
                                         </div>
                                         @if ($errors->has('username'))
                                             <span class="text-red-600 text-sm">{{ $errors->first('username') }}</span>
                                         @endif
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group col-12 col-lg-6">
                                         <label for="password"
-                                            class="color-dark fs-14 fw-500 align-center mb-10">Password</label>
+                                            class="color-dark fs-14 fw-500 align-center mb-10">كلمة السر</label>
                                         <div class="with-icon">
                                             <span class="las la-lock"></span>
-                                            <input type="password" name="password" placeholder="Password"
+                                            <input type="password" name="password" placeholder="كلمة السر"
                                                 value="{{ old('password') }}"
                                                 class="form-control ih-medium ip-gray radius-xs b-light" id="password">
                                         </div>
@@ -70,15 +70,15 @@
                                         @endif
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group col-12 col-lg-6">
                                         <label for="password_confirmation"
-                                            class="color-dark fs-14 fw-500 align-center mb-10">Confirm Password</label>
+                                            class="color-dark fs-14 fw-500 align-center mb-10">تأكيد كلمة السر</label>
                                         <div class="with-icon">
                                             <span class="las la-lock"></span>
                                             <input type="password" name="password_confirmation"
                                                 value="{{ old('password_confirmation') }}"
                                                 class="form-control ih-medium ip-gray radius-xs b-light"
-                                                id="password_confirmation" placeholder="Enter password again">
+                                                id="password_confirmation" placeholder="تأكيد كلمة السر">
                                         </div>
                                         @if ($errors->has('password_confirmation'))
                                             <span
@@ -86,9 +86,9 @@
                                         @endif
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group col-12">
                                         <label for="role"
-                                            class="color-dark fs-14 fw-500 align-center mb-10">Role</label>
+                                            class="color-dark fs-14 fw-500 align-center mb-10">الصلاحية</label>
                                         <div class="with-icon">
                                             <span class="las la-users"></span>
                                             <select name="role" id="role"
@@ -106,29 +106,11 @@
                                         @endif
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="branch"
-                                            class="color-dark fs-14 fw-500 align-center mb-10">Branch</label>
-                                        <div class="with-icon">
-                                            <span class="las la-code-branch"></span>
-                                            <select name="branch" id="branch"
-                                                class="form-control select2 ih-medium ip-gray radius-xs b-light">
-                                                <option value="" selected>Select a branch</option>
-                                                @foreach ($branches as $branch)
-                                                    <option value="{{ $branch->id }}"
-                                                        {{ old('branch') == $branch->id ? 'selected' : '' }}>
-                                                        {{ $branch->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        @if ($errors->has('branch'))
-                                            <span class="text-red-600 text-sm">{{ $errors->first('branch') }}</span>
-                                        @endif
-                                    </div>
+
 
                                     <div class="layout-button mt-25">
                                         <button type="submit"
-                                            class="btn btn-primary btn-default btn-squared px-30">Save</button>
+                                            class="btn btn-primary btn-default btn-squared px-30">أضافة</button>
                                     </div>
                                 </form>
                             </div>

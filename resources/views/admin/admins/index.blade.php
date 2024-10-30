@@ -15,19 +15,11 @@
                         </div>
                         @can('add admins')
                             <div class="action-btn">
-                                <a href="{{ route('admin.admins.add') }}" class="btn px-15 btn-primary">
-                                    <i class="las la-plus fs-16"></i>Add Admin</a>
+                                <a href="{{ route('dashboard.admins.create') }}" class="btn px-15 btn-primary">
+                                    <i class="las la-plus fs-16"></i>أضافة أدمن</a>
                             </div>
                         @endcan
                     </div>
-                    {{-- <div class="row mb-4 mx-4">
-                        <div class="d-flex align-items-center user-member__form my-sm-0 my-2">
-                            <img src="{{ asset('dashboard/img/svg/search.svg') }}" alt="search" class="svg">
-                            <input class="form-control me-sm-2 border-0 box-shadow-none" type="search"
-                                placeholder="Search by Name" aria-label="Search"
-                                id="search-input" value="{{ request('search') }}">
-                        </div>
-                    </div> --}}
 
                 </div>
             </div>
@@ -49,20 +41,18 @@
                                             </div>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title">Name</span>
+                                            <span class="userDatatable-title">الاسم</span>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title">Username</span>
+                                            <span class="userDatatable-title">اليوزر</span>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title">Role</span>
+                                            <span class="userDatatable-title">الصلاحية</span>
                                         </th>
-                                        <th>
-                                            <span class="userDatatable-title">Branch</span>
-                                        </th>
+
                                         @canany(['edit admins', 'delete admins'])
                                             <th>
-                                                <span class="userDatatable-title float-end">action</span>
+                                                <span class="userDatatable-title float-end">الاجراءات</span>
                                             </th>
                                         @endcanany
                                     </tr>
@@ -71,9 +61,6 @@
                                     @include('admin.admins.partials.admins', ['admins' => $admins])
                                 </tbody>
                             </table>
-                        </div>
-                        <div id="pagination-links">
-                            {{ $admins->appends(['search' => request('search')])->links() }}
                         </div>
                     </div>
                 </div>
@@ -84,6 +71,25 @@
 @endsection
 @section('script')
     <script>
-        activateSearchInput("{{ route('admin.admins.index') }}", 'admins-table', 'pagination-links');
+        $(document).on('click', '.delete-admin', function(event) {
+            event.preventDefault();
+            var adminId = $(this).data('id');
+
+            if (confirm('هل تريد حذف هذه الشخص ؟')) {
+                $.ajax({
+                    url: '{{ route("dashboard.admins.destroy", "") }}/' + adminId,
+                    type: 'DELETE',
+                    data: {
+                        "_token": "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        $('#admin-row-' + adminId).remove();
+                    },
+                    error: function(xhr) {
+                        alert('حدث خطأ أثناء الحذف: ' + xhr.responseJSON.message);
+                    }
+                });
+            }
+        });
     </script>
 @endsection

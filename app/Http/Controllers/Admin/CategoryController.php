@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
-
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -64,7 +64,14 @@ class CategoryController extends Controller
     }
     public function destroy(Category $category)
     {
+        $user = Auth::guard('admin')->user();
+        if ($user->roles[0]->name != 'super_admin') {
+            $category->where('author', $user->id);
+        }
+        if (!$category) {
+            return errorResponse('ليس لديك صلاحيات للحذف');
+        }
         $category->delete();
-        return redirect()->route('dashboard.categories.index')->with('success', 'تم حذف الفئة بنجاح');
+        return successResponse('تم الحذف بنجاح');
     }
 }

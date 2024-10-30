@@ -22,6 +22,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('categories')->group(function () {
         Route::get('/', [CategoryController::class, 'index']);
         Route::get('{category}', [CategoryController::class, 'show']);
+        Route::get('/articles/{category}', [CategoryController::class, 'getArticlesInCategory']);
     });
 
     Route::prefix('articles')->group(function () {

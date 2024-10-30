@@ -1,5 +1,5 @@
 @foreach ($categories as $category)
-    <tr>
+    <tr  id="category-row-{{ $category->id }}">
         <td>
             <div class="checkbox-group-wrapper">
                 <div class="checkbox-group d-flex">
@@ -42,23 +42,9 @@
                 @endcan
                 @can('delete category')
                     <li>
-                        <a href="#" id="delete-category-{{ $category->id }}" class="remove">
+                        <a href="#" class="remove delete-category" data-id="{{ $category->id }}">
                             <i class="uil uil-trash-alt"></i>
                         </a>
-                        <form id="delete-form-{{ $category->id }}"
-                            action="{{ route('dashboard.categories.destroy', $category) }}" method="POST"
-                            style="display:block;">
-                            @csrf
-                            @method('DELETE')
-                        </form>
-                        <script>
-                            document.getElementById('delete-category-{{ $category->id }}').addEventListener('click', function(event) {
-                                event.preventDefault();
-                                if (confirm('هل تريد حذف هذة الفئة ؟')) {
-                                    document.getElementById('delete-form-{{ $category->id }}').submit();
-                                }
-                            });
-                        </script>
                     </li>
                 @endcan
             </ul>

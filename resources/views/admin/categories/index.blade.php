@@ -89,3 +89,28 @@
         </div>
     </div>
 @endsection
+
+@section('script')
+    <script>
+        $(document).on('click', '.delete-category', function(event) {
+            event.preventDefault();
+            var categoryId = $(this).data('id');
+
+            if (confirm('هل تريد حذف هذه الفئة؟')) {
+                $.ajax({
+                    url: '{{ route("dashboard.categories.destroy", "") }}/' + categoryId,
+                    type: 'DELETE',
+                    data: {
+                        "_token": "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        $('#category-row-' + categoryId).remove();
+                    },
+                    error: function(xhr) {
+                        alert('حدث خطأ أثناء الحذف: ' + xhr.responseJSON.message);
+                    }
+                });
+            }
+        });
+    </script>
+@endsection

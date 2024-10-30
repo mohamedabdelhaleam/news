@@ -1,5 +1,5 @@
 @foreach ($articles as $article)
-    <tr>
+    <tr id="article-row-{{ $article->id }}">
         <td>
             <div class="checkbox-group-wrapper">
                 <div class="checkbox-group d-flex">
@@ -27,7 +27,6 @@
         </td>
         <td>
             <div class="userDatatable-content">
-
                 <a href="#">{{ optional($article->user)->name }}</a>
             </div>
         </td>
@@ -47,25 +46,13 @@
                 @endcan
                 @can('delete article')
                     <li>
-                        <a href="#" id="delete-article-{{ $article->id }}" class="remove">
+                        <a href="#" class="remove delete-article" data-id="{{ $article->id }}">
                             <i class="uil uil-trash-alt"></i>
                         </a>
-                        <form id="delete-form-{{ $article->id }}" action="{{ route('dashboard.articles.destroy', $article) }}"
-                            method="POST" style="display:block;">
-                            @csrf
-                            @method('DELETE')
-                        </form>
-                        <script>
-                            document.getElementById('delete-article-{{ $article->id }}').addEventListener('click', function(event) {
-                                event.preventDefault();
-                                if (confirm('هل تريد حذف هذة المقالة ؟?')) {
-                                    document.getElementById('delete-form-{{ $article->id }}').submit();
-                                }
-                            });
-                        </script>
                     </li>
                 @endcan
             </ul>
         </td>
     </tr>
 @endforeach
+

@@ -30,14 +30,7 @@
 
                 </div>
             </div>
-            {{-- <div class="row mb-4 mx-4">
-                <div class="d-flex align-items-center user-member__form my-sm-0 my-2">
-                    <img src="{{ asset('dashboard/img/svg/search.svg') }}" alt="search" class="svg">
-                    <input class="form-control me-sm-2 border-0 box-shadow-none" id="search-input"
-                        type="search" value="{{ request('search') }}" placeholder="Search by Name"
-                        aria-label="Search">
-                </div>
-            </div> --}}
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="userDatatable global-shadow border-light-0 p-30 bg-white radius-xl w-100 mb-30">
@@ -92,3 +85,28 @@
         </div>
     </div>
 @endsection
+@section('script')
+    <script>
+        $(document).on('click', '.delete-article', function(event) {
+            event.preventDefault();
+            var articleId = $(this).data('id');
+
+            if (confirm('هل تريد حذف هذه المقالة؟')) {
+                $.ajax({
+                    url: '{{ route("dashboard.articles.destroy", "") }}/' + articleId,
+                    type: 'DELETE',
+                    data: {
+                        "_token": "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        $('#article-row-' + articleId).remove();
+                    },
+                    error: function(xhr) {
+                        alert('حدث خطأ أثناء الحذف: ' + xhr.responseJSON.message);
+                    }
+                });
+            }
+        });
+    </script>
+@endsection
+

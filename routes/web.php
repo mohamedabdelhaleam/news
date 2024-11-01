@@ -23,6 +23,11 @@ use Illuminate\Support\Facades\Route;
 // Route::post('/generate-qr', [CustomerController::class, 'generate_qr'])->name('generate_qr');
 // Route::post('/scan-qr', [CustomerController::class, 'scan_qr'])->name('scan_qr');
 
+
+
+Route::get('/', function () {
+    return view('website.index');
+});
 Route::get('/tst', function () {
     return ('tst');
 });

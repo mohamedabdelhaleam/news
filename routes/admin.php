@@ -21,9 +21,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect()->route('dashboard.admin');
-});
 
 Route::prefix('admin')->name('dashboard.')->middleware(['auth:admin'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('admin');
